@@ -66,6 +66,7 @@ static const char *dmenumount[] = { "~/Scripts/dmenumount", NULL };
 static const char *mount_luks_usb[]  = { "st", "-e", "mount_luks_usb.sh", NULL };
 static const char *mount_usb[]  = { "st", "-e", "mount_usb.sh", NULL };
 static const char *mpcnext[]  = { "mpc", "-p", "6601", "next", NULL };
+static const char *picard[]  = { "picard", NULL };
 static const char *brightup[]  = { "light", "-A", "5", NULL };
 static const char *brightdown[]  = { "light", "-U", "5", NULL };
 static const char *mpcprev[]  = { "mpc", "-p", "6601", "prev", NULL };
@@ -156,6 +157,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,				XK_l,		tagmon,			{.i = +1 } },
 	{ MODKEY|ShiftMask,				XK_m,		spawn,			{.v = mutt } },
 	{ MODKEY|ShiftMask,				XK_n,		spawn,			{.v = newsboat } },
+	{ MODKEY|ShiftMask,				XK_p,		spawn,          {.v = picard } },
 	{ MODKEY|ShiftMask,				XK_q,		killclient,		{0} },
 	{ MODKEY|ShiftMask,				XK_r,		spawn,			{.v = random_wallpaper } },
 	{ MODKEY|ShiftMask,				XK_s,		spawn,			{.v = scratchpad } },
