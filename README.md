@@ -1,8 +1,8 @@
 # rethyxyz-dwm
-My build of dwm. Minimally patched. Contains altbar, transparency, fullscreen, and gaps patches. Supports XF86 keys.
+My build of dwm. Minimally patched. Contains altbar, transparency, fullscreen, statuscolors, and gaps patches. Supports XF86 keys.
 
 ## Preview
-<img title="rethyxyz-dwm preview" src="./rethyxyz-dwm_preview.png" width=720px>
+<center> <img title="rethyxyz-dwm preview" src="./rethyxyz-dwm_preview.png" width=720px> </center>
 
 ## Keybindings
 Repeditive movements are bound to F1-12 keys:
