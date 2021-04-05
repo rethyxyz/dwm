@@ -10,4 +10,8 @@ Repeditive movements are bound to F1-12 keys:
 - **F4**: Last frame as primary
 - **F6**: Kill selected frame
 
+Workspace manipulation
+- **Super + 1-9**: Go to workspace/tag 1 - 9
+- **Super + Shift + 1-9**: Move primary frame to workspace/tag 1 - 9
+
 See `config.h` for other keybindings.

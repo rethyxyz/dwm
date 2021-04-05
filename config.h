@@ -66,22 +66,22 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *brightdown[]  = { "light", "-U", "5", NULL };
+static const char *brightup[]  = { "light", "-A", "5", NULL };
 static const char *browsercmd[]  = { "qutebrowser", NULL };
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *dmenumount[] = { "~/Scripts/dmenumount", NULL };
 static const char *mount_luks_usb[]  = { "st", "-e", "mount_luks_usb.sh", NULL };
 static const char *mount_usb[]  = { "st", "-e", "mount_usb.sh", NULL };
 static const char *mpcnext[]  = { "mpc", "-p", "6601", "next", NULL };
-static const char *picard[]  = { "picard", NULL };
-static const char *brightup[]  = { "light", "-A", "5", NULL };
-static const char *brightdown[]  = { "light", "-U", "5", NULL };
+static const char *mpctoggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
 static const char *mpcprev[]  = { "mpc", "-p", "6601", "prev", NULL };
 static const char *mpcseekback[]  = { "mpc", "-p", "6601", "seek", "-1%", NULL };
 static const char *mpcseekfor[]  = { "mpc", "-p", "6601", "seek", "+1%", NULL };
-static const char *mpctoggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
 static const char *mutt[]  = { "st", "-e", "neomutt", NULL };
 static const char *ncmpcpp[]  = { "st", "-e", "ncmpcpp", NULL };
 static const char *newsboat[]  = { "st", "-e", "newsboat", NULL };
+static const char *picard[]  = { "picard", NULL };
 static const char *random_wallpaper[]  = { "randomize_wallpaper.sh", NULL };
 static const char *ranger[]  = { "st", "-e", "ranger", NULL };
 static const char *scratchpad[]  = { "st", "-e", "vim", "~/notes/Scratchpad.html", NULL };
@@ -146,6 +146,8 @@ static Key keys[] = {
 	{ MODKEY,						XK_r,		spawn,			{.v = ranger } },
 	{ MODKEY,						XK_s,		spawn,			{.v = soulseek } },
 	{ MODKEY,						XK_space,   setlayout,      {0} },
+ 	{ MODKEY,                       XK_0,		view,			{.ui = ~0 } },
+ 	{ MODKEY,                       XK_m,		setlayout,		{.v = &layouts[2]} },
 	{ MODKEY,						XK_t,	    setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ControlMask,			XK_h,		setmfact,		{.f = -0.01} },
 	{ MODKEY|ControlMask,			XK_l,		setmfact,		{.f = +0.01} },
@@ -171,9 +173,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,				XK_t,		spawn,			{.v = todo } },
  	{ MODKEY|ShiftMask,             XK_0,		tag,			{.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_space,	togglefloating,	{0} },
- 	{ MODKEY,                       XK_0,		view,			{.ui = ~0 } },
- 	{ MODKEY,                       XK_m,		setlayout,		{.v = &layouts[2]} },
- 	{ MODKEY,                       XK_space,	setlayout,		{0} },
 };
 
 /* button definitions */
