@@ -9,8 +9,8 @@ static const int topbar             = 0;        /* 0 means bottom bar */
 static const int usealtbar          = 0;        /* 1 means use non-dwm status bar */
 static const char *altbarclass      = "polybar"; /* Alternate bar class name */
 static const char *altbarcmd        = "$HOME/bar.sh"; /* Alternate bar launch command */
-static const char *fonts[]          = { "Terminus (TTF):size=9" };
-static const char dmenufont[]       = "Terminus (TTF):size=9";
+static const char *fonts[]          = { "Terminus (TTF):pixelsize=12" };
+static const char dmenufont[]       = "Terminus (TTF):pixelsize=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -93,9 +93,9 @@ static const char *soulseek[]  = { "soulseek", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *title_case[]  = { "st", "-e", "title_case.sh", NULL };
 static const char *todo[]  = { "st", "-e", "vim", "~/notes/TODO.html", NULL };
-static const char *voldown[]  = { "pactl", "set-sink-volume", "0", "-1%", NULL };
-static const char *volmute[]  = { "pactl", "set-sink-mute", "0", "toggle", NULL };
-static const char *volup[]  = { "pactl", "set-sink-volume", "0", "+1%", NULL };
+static const char *voldown[]  = { "pactl", "set-sink-volume", "1", "-1%", NULL };
+static const char *volmute[]  = { "pactl", "set-sink-mute", "1", "toggle", NULL };
+static const char *volup[]  = { "pactl", "set-sink-volume", "1", "+1%", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function			argument */
