@@ -95,6 +95,7 @@ static const char *todo[]  = { "st", "-e", "vim", "~/notes/TODO.html", NULL };
 static const char *voldown[]  = { "pactl", "set-sink-volume", "1", "-1%", NULL };
 static const char *volmute[]  = { "pactl", "set-sink-mute", "1", "toggle", NULL };
 static const char *volup[]  = { "pactl", "set-sink-volume", "1", "+1%", NULL };
+static const char *helpmenu[]  = { "zathura", "~/repos/dwm/README.pdf", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function			argument */
@@ -109,6 +110,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,						8)
 	{ 0,							XK_F1,		togglefullscr,	{0} },
 	{ 0,							XK_F4,		zoom,			{0} },
+	{ 0,							XK_F5,		spawn,			{.v = helpmenu } },
 	{ 0,							XK_F6,		killclient,		{0} },
 	{ 0, XF86XK_AudioLowerVolume,	spawn,						{.v = voldown } },
 	{ 0, XF86XK_AudioMute,			spawn,						{.v = volmute } },
