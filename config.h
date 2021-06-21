@@ -9,8 +9,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int usealtbar          = 0;        /* 1 means use non-dwm status bar */
 static const char *altbarclass      = "polybar"; /* Alternate bar class name */
 static const char *altbarcmd        = "$HOME/bar.sh"; /* Alternate bar launch command */
-static const char *fonts[]          = { "BigBlue TerminalPlus:pixelsize=12" };
-static const char dmenufont[]       = "BigBlue TerminalPlus:pixelsize=12";
+static const char *fonts[]          = { "Monospace:pixelsize=14", "Noto Color Emoji:pixelsize=16:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Monospace:pixelsize=14";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -77,23 +77,51 @@ static const char *bright_down[]  = { "light", "-U", "5", NULL };
 static const char *bright_up[]  = { "light", "-A", "5", NULL };
 
 static const char *browsercmd[]  = { "qutebrowser", NULL };
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *helpmenu[]  = { "zathura", "~/Documents/Repositories/dwm/README.pdf", NULL };
 
-static const char *logout_request_handler[]  = { "logout_request_handler.sh", NULL };
+static const char *dmenucmd[] = {
+    "dmenu_run",
+        "-m", dmenumon,
+        "-fn", dmenufont,
+        "-nb", col_gray1,
+        "-nf", col_gray3,
+        "-sb", col_cyan,
+        "-sf", col_gray4,
+    NULL
+};
+
+static const char *helpmenu[]  = {
+    "zathura", "~/Documents/Repositories/dwm/README.pdf", NULL
+};
+
+static const char *logout_request_handler[] = {
+    "logout_request_handler.sh", NULL
+};
 
 static const char *mnt_drive[]  = { "st", "-e", "mnt_drive.sh", NULL };
 
 static const char *mpc_next[]  = { "mpc", "-p", "6601", "next", NULL };
 static const char *mpc_prev[]  = { "mpc", "-p", "6601", "prev", NULL };
 
-static const char *mpc_seek_forward[]  = { "mpc", "-p", "6601", "seek", "+1%", NULL };
-static const char *mpc_seek_backward[]  = { "mpc", "-p", "6601", "seek", "-1%", NULL };
-static const char *mpc_toggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
+static const char *mpc_seek_forward[] = {
+    "mpc", "-p", "6601", "seek", "+1%", NULL
+};
+static const char *mpc_toggle[]  = {
+    "mpc", "-p", "6601", "toggle", NULL
+};
+static const char *mpc_seek_backward[] = {
+    "mpc", "-p", "6601", "seek", "-1%", NULL
+};
 
-static const char *vol_up[]  = { "pactl", "set-sink-volume", "0", "+1%", NULL };
-static const char *vol_down[]  = { "pactl", "set-sink-volume", "0", "-1%", NULL };
-static const char *vol_mute[]  = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+/* Volume control commands. */
+static const char *vol_up[] = {
+    "pactl", "set-sink-volume", "1", "+1%", NULL
+};
+static const char *vol_mute[] = {
+    "pactl", "set-sink-mute", "1", "toggle", NULL
+};
+static const char *vol_down[] = {
+    "pactl", "set-sink-volume", "1", "-1%", NULL
+};
 
 static const char *picard[]  = { "picard", NULL };
 static const char *ranger[]  = { "st", "-e", "ranger", NULL };
@@ -179,6 +207,8 @@ static Key keys[] = {
 	{ MODKEY,						XK_minus,	setgaps,        {.i = -1 } },
 	{ MODKEY,						XK_period,	spawn,			{.v = mpc_seek_forward } },
 	{ MODKEY,						XK_space,   setlayout,      {0} },
+	{ MODKEY,						XF86XK_Back,		spawn,	{.v = mpc_prev } },
+	{ MODKEY,						XF86XK_Forward,		spawn,	{.v = mpc_next } },
 
     /* Mod+Alt */
 	{ MODKEY|Mod1Mask,				XK_l,		spawn,			{.v = slock } },
