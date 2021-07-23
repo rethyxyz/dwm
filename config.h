@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 6;        /* gaps between windows */
+static const unsigned int gappx     = 4;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -78,50 +78,26 @@ static const char *bright_up[]  = { "light", "-A", "5", NULL };
 
 static const char *browsercmd[]  = { "qutebrowser", NULL };
 
-static const char *dmenucmd[] = {
-    "dmenu_run",
-        "-m", dmenumon,
-        "-fn", dmenufont,
-        "-nb", col_gray1,
-        "-nf", col_gray3,
-        "-sb", col_cyan,
-        "-sf", col_gray4,
-    NULL
-};
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 
-static const char *helpmenu[]  = {
-    "zathura", "~/Documents/Repositories/dwm/README.pdf", NULL
-};
+static const char *helpmenu[]  = { "zathura", "~/Documents/Repositories/dwm/README.pdf", NULL };
 
-static const char *logout_request_handler[] = {
-    "logout_request_handler.sh", NULL
-};
+static const char *logout_request_handler[] = { "logout_request_handler.sh", NULL };
 
 static const char *mnt_drive[]  = { "st", "-e", "mnt_drive.sh", NULL };
 
 static const char *mpc_next[]  = { "mpc", "-p", "6601", "next", NULL };
 static const char *mpc_prev[]  = { "mpc", "-p", "6601", "prev", NULL };
 
-static const char *mpc_seek_forward[] = {
-    "mpc", "-p", "6601", "seek", "+1%", NULL
-};
-static const char *mpc_toggle[]  = {
-    "mpc", "-p", "6601", "toggle", NULL
-};
-static const char *mpc_seek_backward[] = {
-    "mpc", "-p", "6601", "seek", "-1%", NULL
-};
+/* mpc control */
+static const char *mpc_seek_forward[] = { "mpc", "-p", "6601", "seek", "+1%", NULL };
+static const char *mpc_toggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
+static const char *mpc_seek_backward[] = { "mpc", "-p", "6601", "seek", "-1%", NULL };
 
 /* Volume control commands. */
-static const char *vol_up[] = {
-    "pactl", "set-sink-volume", "1", "+1%", NULL
-};
-static const char *vol_mute[] = {
-    "pactl", "set-sink-mute", "1", "toggle", NULL
-};
-static const char *vol_down[] = {
-    "pactl", "set-sink-volume", "1", "-1%", NULL
-};
+static const char *vol_up[] = { "pactl", "set-sink-volume", "1", "+1%", NULL };
+static const char *vol_mute[] = { "pactl", "set-sink-mute", "1", "toggle", NULL };
+static const char *vol_down[] = { "pactl", "set-sink-volume", "1", "-1%", NULL };
 
 static const char *picard[]  = { "picard", NULL };
 static const char *ranger[]  = { "st", "-e", "ranger", NULL };
