@@ -95,9 +95,9 @@ static const char *mpc_toggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
 static const char *mpc_seek_backward[] = { "mpc", "-p", "6601", "seek", "-1%", NULL };
 
 /* Volume control commands. */
-static const char *vol_up[] = { "pactl", "set-sink-volume", "0", "+1%", NULL };
-static const char *vol_mute[] = { "pactl", "set-sink-mute", "0", "toggle", NULL };
-static const char *vol_down[] = { "pactl", "set-sink-volume", "0", "-1%", NULL };
+static const char *vol_up[] = { "pactl", "set-sink-volume", "1", "+1%", NULL };
+static const char *vol_mute[] = { "pactl", "set-sink-mute", "1", "toggle", NULL };
+static const char *vol_down[] = { "pactl", "set-sink-volume", "1", "-1%", NULL };
 
 static const char *picard[]  = { "picard", NULL };
 static const char *ranger[]  = { "st", "-e", "ranger", NULL };
