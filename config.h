@@ -1,8 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 0;        /* gaps between windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int gappx     = 8;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -43,7 +43,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
     { "mpv",      NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 7,       0,           -1 },
+	{ "firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ "qutebrowser", NULL,    NULL,       1 << 8,       0,           -1 },
 };
 
@@ -75,24 +75,18 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 
 static const char *bright_down[]  = { "light", "-U", "5", NULL };
 static const char *bright_up[]  = { "light", "-A", "5", NULL };
-
-static const char *browsercmd[]  = { "qutebrowser", NULL };
-
+static const char *browsercmd[]  = { "firefox", NULL };
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-
 static const char *helpmenu[]  = { "zathura", "~/Documents/Repositories/dwm/README.pdf", NULL };
-
 static const char *logout_request_handler[] = { "logout_request_handler.sh", NULL };
-
 static const char *mnt_drive[]  = { "st", "-e", "mnt_drive.sh", NULL };
 
-static const char *mpc_next[]  = { "mpc", "-p", "6601", "next", NULL };
-static const char *mpc_prev[]  = { "mpc", "-p", "6601", "prev", NULL };
-
-/* mpc control */
+/* mpd/mpc control */
 static const char *mpc_seek_forward[] = { "mpc", "-p", "6601", "seek", "+1%", NULL };
 static const char *mpc_toggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
 static const char *mpc_seek_backward[] = { "mpc", "-p", "6601", "seek", "-1%", NULL };
+static const char *mpc_next[]  = { "mpc", "-p", "6601", "next", NULL };
+static const char *mpc_prev[]  = { "mpc", "-p", "6601", "prev", NULL };
 
 /* Volume control commands. */
 static const char *vol_up[] = { "pactl", "set-sink-volume", "1", "+1%", NULL };
@@ -119,7 +113,7 @@ static const char *toggle_transparency[]  = { "toggle_transparency.sh", NULL };
 */
 
 static Key keys[] = {
-	/* modifier                     key        function			argument */
+	/* Base/modifier                key         function		argument */
 
     /* Workspace */
 	TAGKEYS(                        XK_1,						0)
@@ -152,6 +146,32 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioNext,			spawn,						{.v = mpc_next } },
 
     /* Mod (using Mod4Mask) */
+    // Alphabet keys
+	{ MODKEY,						XK_b,		spawn,			{.v = browsercmd } },
+	{ MODKEY,						XK_d,		incnmaster,		{.i = -1 } },
+	{ MODKEY,						XK_f,		setlayout,		{.v = &layouts[1]} },
+	{ MODKEY,						XK_h,		focusmon,		{.i = -1 } },
+	{ MODKEY,						XK_i,		incnmaster,     {.i = +1 } },
+	{ MODKEY,						XK_j,		focusstack,		{.i = +1 } },
+	{ MODKEY,						XK_k,		focusstack,		{.i = -1 } },
+	{ MODKEY,						XK_l,		focusmon,		{.i = +1 } },
+ 	{ MODKEY,                       XK_m,		setlayout,		{.v = &layouts[2]} },
+	{ MODKEY,						XK_n,		spawn,			{.v = ncmpcpp } },
+	{ MODKEY,						XK_p,		spawn,          {.v = dmenucmd } },
+	{ MODKEY,						XK_r,		spawn,			{.v = ranger } },
+	{ MODKEY,						XK_s,		spawn,			{.v = soulseek } },
+	{ MODKEY,						XK_t,	    setlayout,      {.v = &layouts[0]} },
+    // Number keys
+	{ MODKEY,						XK_0,		view,			{.ui = ~0 } },
+    // System command keys
+	{ MODKEY,						XK_Return,	spawn,			{.v = termcmd } },
+	{ MODKEY,						XK_Tab,		view,			{0} },
+	{ MODKEY,						XK_comma,	spawn,			{.v = mpc_seek_backward } },
+	{ MODKEY,						XK_equal,	setgaps,		{.i = +1 } },
+	{ MODKEY,						XK_minus,	setgaps,        {.i = -1 } },
+	{ MODKEY,						XK_period,	spawn,			{.v = mpc_seek_forward } },
+	{ MODKEY,						XK_space,   setlayout,      {0} },
+    // F1 - F12 keys
 	{ MODKEY,						XK_F1,		spawn,			{.v = vol_mute } },
 	{ MODKEY,						XK_F2,		spawn,			{.v = vol_down } },
 	{ MODKEY,						XK_F3,		spawn,			{.v = vol_up } },
@@ -161,32 +181,12 @@ static Key keys[] = {
 	{ MODKEY,						XK_F10,		spawn,			{.v = mpc_prev } },
 	{ MODKEY,						XK_F11,		spawn,			{.v = mpc_toggle } },
 	{ MODKEY,						XK_F12,		spawn,			{.v = mpc_next } },
-	{ MODKEY,						XK_b,		spawn,			{.v = browsercmd } },
-	{ MODKEY,						XK_d,		incnmaster,		{.i = -1 } },
-	{ MODKEY,						XK_f,		setlayout,		{.v = &layouts[1]} },
-	{ MODKEY,						XK_h,		focusmon,		{.i = -1 } },
-	{ MODKEY,						XK_i,		incnmaster,     {.i = +1 } },
-	{ MODKEY,						XK_j,		focusstack,		{.i = +1 } },
-	{ MODKEY,						XK_k,		focusstack,		{.i = -1 } },
-	{ MODKEY,						XK_l,		focusmon,		{.i = +1 } },
-	{ MODKEY,						XK_n,		spawn,			{.v = ncmpcpp } },
-	{ MODKEY,						XK_p,		spawn,          {.v = dmenucmd } },
-	{ MODKEY,						XK_r,		spawn,			{.v = ranger } },
-	{ MODKEY,						XK_s,		spawn,			{.v = soulseek } },
-	{ MODKEY,						XK_t,	    setlayout,      {.v = &layouts[0]} },
- 	{ MODKEY,                       XK_m,		setlayout,		{.v = &layouts[2]} },
-	{ MODKEY,						XK_0,		view,			{.ui = ~0 } },
-	{ MODKEY,						XK_Return,	spawn,			{.v = termcmd } },
-	{ MODKEY,						XK_Tab,		view,			{0} },
-	{ MODKEY,						XK_comma,	spawn,			{.v = mpc_seek_backward } },
-	{ MODKEY,						XK_equal,	setgaps,		{.i = +1 } },
-	{ MODKEY,						XK_minus,	setgaps,        {.i = -1 } },
-	{ MODKEY,						XK_period,	spawn,			{.v = mpc_seek_forward } },
-	{ MODKEY,						XK_space,   setlayout,      {0} },
+    // XF86 keys
 	{ MODKEY,						XF86XK_Back,		spawn,	{.v = mpc_prev } },
 	{ MODKEY,						XF86XK_Forward,		spawn,	{.v = mpc_next } },
 
-    /* Mod+Alt */
+    /* Mod + Alt */
+    // Alphabet keys
 	{ MODKEY|Mod1Mask,				XK_l,		spawn,			{.v = slock } },
 
     /* Mod+Shift */
