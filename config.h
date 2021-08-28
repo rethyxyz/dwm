@@ -1,22 +1,43 @@
 /* See LICENSE file for copyright and license details. */
 
-/* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
-static const unsigned int gappx     = 8;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const int usealtbar          = 0;        /* 1 means use non-dwm status bar */
-static const char *altbarclass      = "polybar"; /* Alternate bar class name */
-static const char *altbarcmd        = "$HOME/bar.sh"; /* Alternate bar launch command */
-static const char *fonts[]          = { "Monospace:pixelsize=14", "Noto Color Emoji:pixelsize=14:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Monospace:pixelsize=14";
-static const char col_gray1[]       = "#222222";
+//++++++++++++//
+// Appearance //
+//++++++++++++//
+
+/* Global dwm font. Titlebar and such. */
+static const char *fonts[] = {
+    "Terminus (TTF):pixelsize=12",
+    "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true"
+};
+
+/* 0 means no bar */
+static const int showbar = 1;
+/* 0 means bottom bar */
+static const int topbar = 1;
+
+/* Alternate bar class name */
+static const char *altbarclass = "polybar";
+/* Alternate bar launch command */
+static const char *altbarcmd = "$HOME/bar.sh";
+/* 1 means use non-dwm status bar */
+static const int usealtbar = 0;
+
+static const unsigned int borderpx = 1; /* border pixel of windows */
+static const unsigned int gappx = 4; /* gaps between windows */
+static const unsigned int snap = 32; /* snap pixel */
+
+static const char dmenufont[]       = "Terminus (TTF):pixelsize=12";
+// #222222
+static const char col_gray1[]       = "#000000";
+// #444444
 static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
+// #bbbbbb
+static const char col_gray3[]       = "#ffffff";
+// #eeeeee
+static const char col_gray4[]       = "#ffffff";
 static const char col_green[]       = "#00FF00";
-static const char col_cyan[]        = "#4b3501";
+// This is, in-fact, pink.
+static const char col_cyan[]        = "#ff007f";
 static const char col_purple[]      = "#800080";
 static const char col_black[]       = "#000000";
 static const char col_red[]         = "#ff0000";
@@ -32,25 +53,31 @@ static const char *colors[][3]      = {
 	[SchemePurple]=  { col_white, col_purple, col_purple },
 };
 
-/* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+// Tagging.
+static const char *tags[] = { "a", "b", "c", "d", "e", "f", "g", "h", "i" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-    { "mpv",      NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "qutebrowser", NULL,    NULL,       1 << 8,       0,           -1 },
+
+	/* class,        instance,  title,                                      ags mask, isfloating, monitor */
+	{ "Gimp",        NULL,      NULL,                                       0,        1,          -1 },
+	{ "firefox",     NULL,      NULL,                                       1 << 8,   0,          -1 },
+	{ "qutebrowser", NULL,      NULL,                                       1 << 8,   0,          -1 },
+	{ "st-256color", NULL,      "Scratchpad.md (~/Documents/Notes) - VIM",  1 << 2,   0,          -1 },
+	{ "st-256color", NULL,      "TODO.md (~/Documents/Notes) - VIM",        1 << 2,   0,          -1 },
+	{ "st-256color", NULL,      "ncmpcpp",                                  1 << 3,   0,          -1 },
+	{ "st-256color", NULL,      "newsboat",                                 1 << 3,   0,          -1 },
+    { "libreoffice", NULL,      NULL,                                       1 << 2,   0,          -1 },
+    { "mpv",         NULL,      NULL,                                       1 << 3,   0,          -1 },
 };
 
-/* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+// Layouts.
+static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
+static const int nmaster = 1; /* number of clients in master area */
+static const int resizehints = 0; /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -59,7 +86,55 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
 };
 
-/* key definitions */
+//++++++++++//
+// Commands //
+//++++++++++//
+
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *logout_request_handler[] = { "logout_request_handler.sh", NULL };
+static const char *restart_dwmbar[] = { "restart_dwmbar.sh", NULL };
+static const char *restart_request_handler[] = { "restart_request_handler.sh", NULL };
+static const char *termcmd[] = { "st", NULL };
+static const char *toggle_transparency[] = { "toggle_transparency.sh", NULL };
+
+// Brightness control.
+static const char *bright_down[] = { "light", "-U", "5", NULL };
+static const char *bright_up[] = { "light", "-A", "5", NULL };
+
+// mpd/mpc control.
+static const char *mpc_seek_forward[] = { "mpc", "-p", "6601", "seek", "+1%", NULL };
+static const char *mpc_toggle[] = { "mpc", "-p", "6601", "toggle", NULL };
+static const char *mpc_seek_backward[] = { "mpc", "-p", "6601", "seek", "-1%", NULL };
+static const char *mpc_next[] = { "mpc", "-p", "6601", "next", NULL };
+static const char *mpc_prev[] = { "mpc", "-p", "6601", "prev", NULL };
+
+// Volume control.
+static const char *vol_up[] = { "pactl", "set-sink-volume", "1", "+1%", NULL };
+static const char *vol_mute[] = { "pactl", "set-sink-mute", "1", "toggle", NULL };
+static const char *vol_down[] = { "pactl", "set-sink-volume", "1", "-1%", NULL };
+
+// Notes.
+static const char *todo[] = { "st", "-e", "vim", "/home/brody/Documents/Notes/TODO.md", NULL };
+static const char *scratchpad[] = { "st", "-e", "vim", "/home/brody/Documents/Notes/Scratchpad.md", NULL };
+
+// GUI Programs
+static const char *picard[] = { "picard", NULL };
+static const char *soulseek[] = { "soulseekqt", NULL };
+static const char *browsercmd[] = { "firefox", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+
+// TUI Programs
+static const char *ranger[] = { "st", "-e", "ranger", NULL };
+static const char *ncmpcpp[] = { "st", "-e", "ncmpcpp", NULL };
+static const char *neomutt[] = { "st", "-e", "neomutt", NULL };
+static const char *newsboat[] = { "st", "-e", "newsboat", NULL };
+static const char *slock[] = { "slock", NULL };
+
+//+++++++++++++++++//
+// Key Definitions //
+//+++++++++++++++++//
+
+// Main key definitions.
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -67,55 +142,13 @@ static const Layout layouts[] = {
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
+/* Helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
-/* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-
-static const char *bright_down[]  = { "light", "-U", "5", NULL };
-static const char *bright_up[]  = { "light", "-A", "5", NULL };
-static const char *browsercmd[]  = { "firefox", NULL };
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *helpmenu[]  = { "zathura", "~/Documents/Repositories/dwm/README.pdf", NULL };
-static const char *logout_request_handler[] = { "logout_request_handler.sh", NULL };
-static const char *mnt_drive[]  = { "st", "-e", "mnt_drive.sh", NULL };
-
-/* mpd/mpc control */
-static const char *mpc_seek_forward[] = { "mpc", "-p", "6601", "seek", "+1%", NULL };
-static const char *mpc_toggle[]  = { "mpc", "-p", "6601", "toggle", NULL };
-static const char *mpc_seek_backward[] = { "mpc", "-p", "6601", "seek", "-1%", NULL };
-static const char *mpc_next[]  = { "mpc", "-p", "6601", "next", NULL };
-static const char *mpc_prev[]  = { "mpc", "-p", "6601", "prev", NULL };
-
-/* Volume control commands. */
-static const char *vol_up[] = { "pactl", "set-sink-volume", "1", "+1%", NULL };
-static const char *vol_mute[] = { "pactl", "set-sink-mute", "1", "toggle", NULL };
-static const char *vol_down[] = { "pactl", "set-sink-volume", "1", "-1%", NULL };
-
-static const char *picard[]  = { "picard", NULL };
-static const char *ranger[]  = { "st", "-e", "ranger", NULL };
-static const char *ncmpcpp[]  = { "st", "-e", "ncmpcpp", NULL };
-static const char *neomutt[]  = { "st", "-e", "neomutt", NULL };
-static const char *newsboat[]  = { "st", "-e", "newsboat", NULL };
-static const char *restart_dwmbar[]  = { "restart_dwmbar.sh", NULL };
-static const char *restart_request_handler[]  = { "restart_request_handler.sh", NULL };
-static const char *scratchpad[]  = { "st", "-e", "vim", "~/Documents/Notes/Scratchpad", NULL };
-static const char *slock[]  = { "slock", NULL };
-static const char *soulseek[]  = { "soulseekqt", NULL };
-static const char *termcmd[]  = { "st", NULL };
-static const char *toggle_transparency[]  = { "toggle_transparency.sh", NULL };
-
-/*
- * static const char *mnt_luks_drive[]  = { "st", "-e", "mnt_luks_drive.sh", NULL };
- * static const char *title_case[]  = { "st", "-e", "title_case.sh", NULL };
- * static const char *random_wallpaper[]  = { "randomize_wallpaper.sh", NULL };
-*/
 
 static Key keys[] = {
 	/* Base/modifier                key         function		argument */
 
-    /* Workspace */
+    // Workspaces
 	TAGKEYS(                        XK_1,						0)
 	TAGKEYS(                        XK_2,						1)
 	TAGKEYS(                        XK_3,						2)
@@ -126,15 +159,14 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,						7)
 	TAGKEYS(                        XK_9,						8)
 
-    /* F1-12 */
+    // F1-12
 	{ 0,							XK_F1,		togglefullscr,	{0} },
-	{ 0,							XK_F4,		zoom,			{0} },
+	{ 0,							XK_F4,		view,			{0} },
 	{ 0,							XK_F6,		killclient,		{0} },
-	{ 0,							XK_F9,		spawn,			{.v = helpmenu } },
 	{ 0,							XK_F11,		focusstack,		{.i = -1 } },
 	{ 0,							XK_F12,		focusstack,		{.i = +1 } },
 
-    /* XF86 */
+    // XF86
 	{ 0, XF86XK_AudioMute,			spawn,						{.v = vol_mute } },
 	{ 0, XF86XK_AudioLowerVolume,	spawn,						{.v = vol_down } },
 	{ 0, XF86XK_AudioRaiseVolume,	spawn,						{.v = vol_up } },
@@ -145,7 +177,7 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioPlay,			spawn,						{.v = mpc_toggle } },
 	{ 0, XF86XK_AudioNext,			spawn,						{.v = mpc_next } },
 
-    /* Mod (using Mod4Mask) */
+    // Mod
     // Alphabet keys
 	{ MODKEY,						XK_b,		spawn,			{.v = browsercmd } },
 	{ MODKEY,						XK_d,		incnmaster,		{.i = -1 } },
@@ -185,11 +217,11 @@ static Key keys[] = {
 	{ MODKEY,						XF86XK_Back,		spawn,	{.v = mpc_prev } },
 	{ MODKEY,						XF86XK_Forward,		spawn,	{.v = mpc_next } },
 
-    /* Mod + Alt */
+    // Mod + Alt
     // Alphabet keys
 	{ MODKEY|Mod1Mask,				XK_l,		spawn,			{.v = slock } },
 
-    /* Mod+Shift */
+    // Mod+Shift
 	{ MODKEY|ShiftMask,				XK_b,		togglebar,		{0} },
 	{ MODKEY|ShiftMask,				XK_c,		spawn,			{.v = logout_request_handler } },
 	{ MODKEY|ShiftMask,				XK_f,		togglefullscr,	{0} },
@@ -202,16 +234,18 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,				XK_r,		spawn,			{.v = restart_dwmbar } },
 	{ MODKEY|ShiftMask,				XK_s,		spawn,			{.v = scratchpad } },
 	{ MODKEY|ShiftMask,				XK_t,		spawn,			{.v = toggle_transparency } },
+    // Numeric keys
+	{ MODKEY|ShiftMask,				XK_0,		tag,			{.ui = ~0 } },
+    // System command keys
 	{ MODKEY|ShiftMask,				XK_Return,	zoom,           {0} },
 	{ MODKEY|ShiftMask,			    XK_BackSpace,	spawn,      {.v = restart_request_handler } },
 	{ MODKEY|ShiftMask,				XK_equal,	setgaps,		{.i = 0  } },
  	{ MODKEY|ShiftMask,             XK_space,	togglefloating,	{0} },
-	{ MODKEY|ShiftMask,				XK_0,		tag,			{.ui = ~0 } },
 
-    /* Mod+Ctrl base binds*/
+    // Mod + Ctrl
 	{ MODKEY|ControlMask,			XK_h,		setmfact,		{.f = -0.01} },
 	{ MODKEY|ControlMask,			XK_l,		setmfact,		{.f = +0.01} },
-	{ MODKEY|ControlMask,			XK_m,		spawn,			{.v = mnt_drive } },
+	{ MODKEY|ControlMask,			XK_t,		spawn,		    {.v = todo } },
 };
 
 /* button definitions */
